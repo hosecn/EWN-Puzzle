@@ -31,20 +31,17 @@ public class GameLoader {
 
 
 
-    public void printGameDetails() {
+    public void printGameDetails(String playerName) {
         String filePath = "moves.txt";
         try (FileWriter writer = new FileWriter(filePath)) {
-            
-            writer.write(targetPiece + "\n");
-
-            for (int pos : piecePositions) {
-                writer.write(pos + " ");
-            }
-            writer.write("\n");
+            writer.write(playerName + "\n");
 
             for (int dice : diceSequence) {
                 writer.write(dice + " ");
             }      
+            writer.write("\n");
+
+            writer.write(targetPiece + "\n");
             writer.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
