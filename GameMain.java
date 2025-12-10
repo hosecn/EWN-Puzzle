@@ -19,14 +19,21 @@ public class GameMain {
         Player player = null;
 
         int playerNumber;
+        String playerName;
         try (Scanner sc = new Scanner(System.in)) {
             playerNumber = sc.nextInt();
         }
 
         switch (playerNumber) {
-            case 1 -> player = new HumanPlayer();
-            case 2 -> player = new RandomPlayer();
-            case 3 -> player = new AIPlayer();
+            case 1 -> {
+                player = new HumanPlayer();
+                System.out.println("Please enter player name.");
+                try (Scanner sc = new Scanner(System.in)) {
+                    playerName = sc.nextLine();
+                }
+            }
+            case 2 -> {player = new RandomPlayer(); playerName = "Random Player";}
+            case 3 -> {player = new AIPlayer(); playerName = "AI Player";}
             default -> throw new AssertionError();
         }
 
@@ -43,7 +50,7 @@ public class GameMain {
         int[] piecePositions = loader.getPiecePositions();
         int[] diceSequence = loader.getDiceSequence();
 
-        loader.printGameDetails();
+        loader.printGameDetails(playerName);
 
         GameState state = new GameState(targetPiece, piecePositions, diceSequence, 1);
 
