@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameMain {
@@ -13,9 +12,9 @@ public class GameMain {
         //
         
         System.out.println("Please choose a game mode.");
-        System.out.println("Human Player : Press 1");
-        System.out.println("Random Player : Press 2");
-        System.out.println("AI Player : Press 3");
+        System.out.println("Human Player : Press 1.");
+        System.out.println("Random Player : Press 2.");
+        System.out.println("AI Player : Press 3.");
         Player player = null;
 
         int playerNumber;
@@ -55,14 +54,12 @@ public class GameMain {
         GameState state = new GameState(targetPiece, piecePositions, diceSequence, 1);
 
         int result = player.chooseMove(state);
-        // 4. Call the chooseMove() function of the player
-        //    to perform their move based on the current game state.
-        //
-        // 5. Display the result of the game
-
-        // You may also add any other helper functions, variables,
-        // and constructors needed for your implementation.
         
+        if (result == 1) {
+            System.out.println("The puzzle is solved.");
+        } else {
+            System.out.println("The player failed to solve the puzzle.");
+        }
     }
 }
 
