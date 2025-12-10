@@ -1,22 +1,65 @@
+import java.io.*;
+import java.util.Arrays;
+
 public class GameLoader {
+    private int targetPiece;
+    private int[] piecePositions;
+    private int[] diceSequence;
 
-    // ============================================================
-    // TODO: Implement constructor
-    // ------------------------------------------------------------
-    // This method read data from the given filename and stores
-    // them in appropriate variables
-    //
-    // You may decide on the return type, parameters, and internal logic.
-    // ============================================================
+    public GameLoader(String filePath) {
+        try (FileReader fr = new FileReader(filePath); BufferedReader br = new BufferedReader(fr)) {
+            String line;
+            line = br.readLine();
+            targetPiece = Integer.parseInt(line);
+            
+            line = br.readLine();
+            piecePositions = Arrays.stream(line.split(" "))
+                .map(String::trim)
+                .mapToInt(Integer::parseInt)
+                .toArray();
 
-    // ============================================================
-    // TODO: Implement printGameDetails()
-    // ------------------------------------------------------------
-    // This method print the game setup details into "moves.txt"
-    //
-    // You may decide on the return type, parameters, and internal logic.
-    // ============================================================
+            line = br.readLine();
 
-    // You may also add any other helper functions, variables,
-    // and constructors needed for your implementation.
+            diceSequence = Arrays.stream(line.split(" "))
+                .map(String::trim)
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+    public void printGameDetails() {
+        String filePath = "moves.txt";
+        try (FileWriter writer = new FileWriter(filePath)) {
+            
+            writer.write(targetPiece + "\n");
+
+            for (int pos : piecePositions) {
+                writer.write(pos + " ");
+            }
+            writer.write("\n");
+
+            for (int dice : diceSequence) {
+                writer.write(dice + " ");
+            }      
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public int getTargetPiece() {
+        return targetPiece;
+    }
+
+    public int[] getPiecePositions() {
+        return piecePositions;
+    }
+
+    public int[] getDiceSequence() {
+        return diceSequence;
+    }
 }
