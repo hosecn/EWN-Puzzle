@@ -61,6 +61,6 @@ public class AIPlayer extends Player{
         for (int i = round - 1; i < diceSequence.length; i++) {
             diceCount[diceSequence[i]]++;
         }
-        return 1;
+        return round;
     }
 }
