@@ -1,16 +1,20 @@
-public class RandomPlayer extends Player{
-    // ============================================================
-    // TODO: Implement chooseMove()
-    // ------------------------------------------------------------
-    // This method randomly choose the moves to solve the puzzle
-    //
-    // You may decide on the return type, parameters, and logic.
-    // ============================================================
+import java.util.Random;
 
-    // You may also add any other helper functions, variables,
-    // and constructors needed for your implementation.
+public class RandomPlayer extends Player{
+    
     @Override
     public int chooseMove(GameState state) {
-        return -1;
+        printMove(state.getPiecePositions());
+        Random random = new Random();
+        for (int i = 1; i <= state.maxRound; i++) {
+            int[][] possibleMoves = state.generatePossibleMoves(i);
+            int index = random.nextInt(possibleMoves.length);
+            state.setPiecePositions(possibleMoves[index]);
+            printMove(possibleMoves[index]);
+            if (state.isWinning()) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
