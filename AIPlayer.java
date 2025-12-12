@@ -24,7 +24,7 @@ public class AIPlayer extends Player{
             return Integer.compare(a.distance, b.distance);
         });
 
-        pq.add(new Node(0, state.piecePositions, 0, null));
+        pq.add(new Node(0, state.getPiecePositions(), 0, null));
         while (!pq.isEmpty()) {
             Node node = pq.poll();
             searchNodeNum++;
@@ -34,10 +34,10 @@ public class AIPlayer extends Player{
                 System.out.println("The solution is found after searching " + searchNodeNum + " positions.");
                 int[][] chosenMoves = new int[30][6];
                 int chosenMovesIdx = 0;
-                do {
+                while(node != null) {
                     chosenMoves[chosenMovesIdx++] = node.piecePositions;
                     node = node.previousNode;
-                } while(node != null);
+                }
                 for (int i = chosenMovesIdx - 1; i >= 0; i--) {
                     printMove(chosenMoves[i]);
                 }

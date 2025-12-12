@@ -42,11 +42,8 @@ public class GameMain {
 
             int result = player.chooseMove(state);
             
-            if (result == 1) {
-                System.out.println("The puzzle is solved.");
-            } else {
-                System.out.println("The player failed to solve the puzzle.");
-            }
+            if (result == 1) System.out.println("The puzzle is solved.");
+            else System.out.println("The player failed to solve the puzzle.");
         }
     }
 }

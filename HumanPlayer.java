@@ -8,7 +8,7 @@ public class HumanPlayer extends Player{
             for (int round = 1; round <= state.maxRound; round++) {
                 System.out.print("Current piece positions: ");
                 for (int i = 0; i < 6; i++) {
-                    System.out.print(state.piecePositions[i] + " ");
+                    System.out.print(state.getPiecePositions()[i] + " ");
                 }
                 System.out.println();
                 System.out.println("Please choose your move: ");

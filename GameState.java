@@ -1,12 +1,11 @@
 import java.util.Arrays;
 
 public class GameState {
-    int targetPiece;
-    int[] piecePositions;
-    int[] removedPositions = {22};
-    int[] diceSequence;
-    int maxRound;
-
+    public final int targetPiece;
+    private int[] piecePositions;
+    public final int[] removedPositions = {22};
+    public final int[] diceSequence;
+    public final int maxRound;
 
     public GameState (int targetPiece, int[] piecePositions, int[] diceSequence, int maxRound) {
         this.targetPiece = targetPiece;
@@ -16,7 +15,7 @@ public class GameState {
     }
 
     public int[][] generatePossibleMoves(int round) {
-        int diceNumber = diceSequence[round - 1];
+        int diceNumber = this.diceSequence[round - 1];
         int[] moveablePieces = new int[2];
         int[][] possibleMoves = new int[16][6];
         int possibleMovesIdx = 0;
@@ -50,9 +49,11 @@ public class GameState {
 
                 pos += dpos;
                 boolean isRemoved = false;
-                for (int removedPos : removedPositions)
-                    if (pos == removedPos)
+                for (int removedPos : removedPositions) {
+                    if (pos == removedPos) {
                         isRemoved = true;
+                    }
+                }
 
                 if (isRemoved) continue;
                 int[] newPiecePositions = piecePositions.clone();
@@ -72,20 +73,13 @@ public class GameState {
     public void setPiecePositions(int[] Positions) {
         this.piecePositions = Positions;
     }
-
+    
+    public int[] getPiecePositions() {
+        return piecePositions;
+    }
+    
     public boolean isWinning() {
         return piecePositions[targetPiece - 1] == 0;
     }
 
-    public int getTargetPiece() {
-        return targetPiece;
-    }
-
-    public int[] getPiecePositions() {
-        return piecePositions;
-    }
-
-    public int[] getDiceSequence() {
-        return diceSequence;
-    }
 }
