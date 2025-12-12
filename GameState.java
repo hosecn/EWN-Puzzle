@@ -66,7 +66,7 @@ public class GameState {
                 possibleMoves[possibleMovesIdx++] = newPiecePositions;
             }
         }
-        return (int[][])Arrays.copyOf(possibleMoves, possibleMovesIdx);
+        return Arrays.copyOf(possibleMoves, possibleMovesIdx);
     }
 
     public void setPiecePositions(int[] Positions) {
