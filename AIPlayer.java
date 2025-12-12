@@ -2,7 +2,7 @@
 import java.util.PriorityQueue;
 
 public class AIPlayer extends Player{
-    
+
     class Node {
         int round;
         int[] piecePositions;
@@ -37,7 +37,7 @@ public class AIPlayer extends Player{
                 int[][] chosenMoves = new int[30][6];
                 int chosenMovesIdx = 0;
                 do {
-                    chosenMoves[chosenMovesIdx++] = node.piecePositions.clone();
+                    chosenMoves[chosenMovesIdx++] = node.piecePositions;
                     node = node.previousNode;
                 } while(node != null);
                 for (int i = chosenMovesIdx - 1; i >= 0; i--) {
