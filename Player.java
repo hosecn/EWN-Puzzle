@@ -5,10 +5,10 @@ public abstract class Player {
 
     public abstract int chooseMove(GameState state);
     
-    public void printMove(GameState state) {
+    public void printMove(int[] piecePositions) {
         String filePath = "moves.txt";
-        try (FileWriter writer = new FileWriter(filePath)) {
-            for (int pos : state.getPiecePositions()) {
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            for (int pos : piecePositions) {
                 writer.write(pos + " ");
             }
             writer.write("\n");

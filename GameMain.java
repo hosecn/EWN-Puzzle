@@ -17,33 +17,29 @@ public class GameMain {
         System.out.println("AI Player : Press 3.");
         Player player = null;
 
-        int playerNumber;
+        int playerNumber, levelNumber;
         String playerName;
         try (Scanner sc = new Scanner(System.in)) {
             playerNumber = sc.nextInt();
-        }
-
-        switch (playerNumber) {
-            case 1 -> {
-                player = new HumanPlayer();
-                System.out.println("Please enter player name.");
-                try (Scanner sc = new Scanner(System.in)) {
-                    playerName = sc.nextLine();
+            switch (playerNumber) {
+                case 1 -> {
+                    player = new HumanPlayer();
+                    System.out.println("Please enter player name.");
+                    playerName = sc.next();
                 }
+                case 2 -> {player = new RandomPlayer(); playerName = "Random Player";}
+                case 3 -> {player = new AIPlayer(); playerName = "AI Player";}
+                default -> throw new AssertionError();
             }
-            case 2 -> {player = new RandomPlayer(); playerName = "Random Player";}
-            case 3 -> {player = new AIPlayer(); playerName = "AI Player";}
-            default -> throw new AssertionError();
-        }
+            System.out.println("Please select a level.");
+            System.out.println("Press 1 / 2 / 3 / 4.");
 
-        System.out.println("Please select a level.");
-        System.out.println("Press 1 / 2 / 3 / 4.");
-
-        int levelNumber;
-        try (Scanner sc = new Scanner(System.in)) {
             levelNumber = sc.nextInt();
         }
-        String filePath = "./TestCases/level" + (levelNumber - 1) + ".txt";
+
+
+
+        String filePath = "./TestCases/level" + levelNumber + ".txt";
         GameLoader loader = new GameLoader(filePath);
         int targetPiece = loader.getTargetPiece();
         int[] piecePositions = loader.getPiecePositions();

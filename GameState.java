@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class GameState {
     int targetPiece;
     int[] piecePositions;
@@ -16,24 +18,26 @@ public class GameState {
     }
 
     public int[][] generatePossibleMoves() {
+        diceNumber = diceSequence[round - 1];
         int[] moveablePieces = new int[2];
         int[][] possibleMoves = new int[16][6];
         int possibleMovesIdx = 0;
         
         int idx = 0;
         for (int i = 0; i <= 6; i++) {
-            if (diceNumber - 1 - i >= 0 && diceNumber - 1 - i <= 6) {
+            if (diceNumber - i >= 1 && diceNumber - i <= 6) {
                 if (piecePositions[diceNumber - 1 - i] != -1) {
-                    moveablePieces[idx++] = i;
+                    moveablePieces[idx++] = diceNumber - i;
                 }
             }
-            if (diceNumber - 1 + i >= 0 && diceNumber - 1 + i <= 6) {
+            if (i != 0 && diceNumber + i >= 1 && diceNumber + i <= 6) {
                 if (piecePositions[diceNumber - 1 + i] != -1) {
-                    moveablePieces[idx++] = i;
+                    moveablePieces[idx++] = diceNumber + i;
                 }
             }
-            if (moveablePieces[0] != 0) break;
+            if (idx != 0) break;
         }
+        // System.out.println(round + " " + moveablePieces[0]);
 
         int[] DPOS = {-11, -10, -1, -9, 9, 1, -1, 11};
         for (int i = 0; i < 2; i++) {
@@ -59,11 +63,22 @@ public class GameState {
                 possibleMoves[possibleMovesIdx++] = newPiecePositions;
             }
         }
-        return possibleMoves;
+        // for (int i=0; i<16; i++) {
+        //     for (int j=0; j<6; j++) {
+        //         System.out.print(possibleMoves[i][j] + " ");
+        //     }
+        //     System.out.println();
+        // }
+        // System.out.println("---------");
+        return (int[][])Arrays.copyOf(possibleMoves, possibleMovesIdx);
     }
 
     public void setPiecePositions(int[] Positions) {
         this.piecePositions = Positions;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 
     public boolean isWinning() {
