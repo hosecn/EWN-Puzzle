@@ -62,13 +62,6 @@ public class GameState {
                 possibleMoves[possibleMovesIdx++] = newPiecePositions;
             }
         }
-        // for (int i=0; i<16; i++) {
-        //     for (int j=0; j<6; j++) {
-        //         System.out.print(possibleMoves[i][j] + " ");
-        //     }
-        //     System.out.println();
-        // }
-        // System.out.println("---------");
         return (int[][])Arrays.copyOf(possibleMoves, possibleMovesIdx);
     }
 
