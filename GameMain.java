@@ -28,7 +28,7 @@ public class GameMain {
 
             levelNumber = sc.nextInt();
         
-            int maxRounds[] = {6, 11, 10, 15};
+            int maxRounds[] = {6, 10, 10, 15};
             maxRound = maxRounds[levelNumber - 1];
             String filePath = "./TestCases/level" + levelNumber + ".txt";
             GameLoader loader = new GameLoader(filePath);
