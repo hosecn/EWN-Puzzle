@@ -36,7 +36,7 @@ public class GameState {
             if (idx != 0) break;
         }
 
-        int[] DPOS = {-11, -10, -1, -9, 9, 1, -1, 11};
+        int[] DPOS = {-11, -10, -1, -9, 9, 1, 10, 11};
         for (int i = 0; i < 2; i++) {
             int piece = moveablePieces[i];
             if (piece == 0) continue;
