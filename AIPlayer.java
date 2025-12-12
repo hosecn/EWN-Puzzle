@@ -19,6 +19,7 @@ public class AIPlayer extends Player{
 
     @Override
     public int chooseMove(GameState state) {
+        int searchNodeNum = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> {
             return Integer.compare(a.distance, b.distance);
         });
@@ -27,10 +28,11 @@ public class AIPlayer extends Player{
         while (!pq.isEmpty()) {
             Node node = pq.poll();
             if (node.round > state.maxRound) continue;
-            
+            searchNodeNum++;
             state.setPiecePositions(node.piecePositions);
             
             if (state.isWinning()) {
+                System.out.println("The solution is found after " + searchNodeNum + " searches.");
                 int[][] chosenMoves = new int[30][6];
                 int chosenMovesIdx = 0;
                 do {
@@ -77,12 +79,17 @@ public class AIPlayer extends Player{
                 if (j == i) continue;
                 if (piecePositions[j] == -1) continue;
 
-                pieceDistance += Math.max(Math.abs(piecePositions[i] % 10 - piecePositions[j] % 10) % 10, Math.abs(piecePositions[i] / 10 - piecePositions[j] / 10));
+                pieceDistance += Math.max(
+                    Math.abs(piecePositions[i] % 10 - piecePositions[j] % 10) % 10,
+                    Math.abs(piecePositions[i] / 10 - piecePositions[j] / 10)
+                    );
             }
         }
-        int solvable = 0;
-        if (maxRound + 1 - round < targetPieceDistance) solvable += 1e8;
+        pieceDistance /= 2;
 
-        return round + pieceWeightCount * 20 + targetPieceDistance * 3 + pieceDistance / 6 + solvable;
+        int solvable = 0;
+        if (targetPieceDistance + round > maxRound) solvable += 1e8;
+
+        return round + pieceWeightCount + targetPieceDistance + pieceDistance + solvable;
     }
 }
