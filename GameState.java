@@ -43,6 +43,11 @@ public class GameState {
 
             for (int dpos : DPOS) {
                 int pos = piecePositions[piece - 1];
+                if (dpos % 10 == -1 && pos % 10 == 0) continue;
+                if (dpos % 10 == 1 && pos % 10 == 9) continue;
+                if (dpos / 10 == -1 && pos / 10 == 0) continue;
+                if (dpos / 10 == 1 && pos / 10 == 9) continue;
+
                 pos += dpos;
                 boolean isRemoved = false;
                 for (int removedPos : removedPositions)
@@ -50,7 +55,6 @@ public class GameState {
                         isRemoved = true;
 
                 if (isRemoved) continue;
-                if (pos < 0 || pos > 100) continue;
                 int[] newPiecePositions = piecePositions.clone();
                 for (int piece2 = 1; piece2 <= 6; piece2++) {
                     if (newPiecePositions[piece2 - 1] == pos) {
