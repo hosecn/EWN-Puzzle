@@ -9,4 +9,8 @@ public class RandomPlayer extends Player{
 
     // You may also add any other helper functions, variables,
     // and constructors needed for your implementation.
+    @Override
+    public int chooseMove(GameState state) {
+        return -1;
+    }
 }

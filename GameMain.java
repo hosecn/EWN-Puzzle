@@ -3,19 +3,11 @@ import java.util.Scanner;
 public class GameMain {
 
     public static void main(String[] args) {
-        // ============================================================
-        // TODO: Implement the main() function
-        // ------------------------------------------------------------
-        // This is the main entry point of the program.
-        //
-        // The function should perform the following tasks:
-        //
-        
         System.out.println("Please choose a game mode.");
         System.out.println("Human Player : Press 1.");
         System.out.println("Random Player : Press 2.");
         System.out.println("AI Player : Press 3.");
-        Player player = null;
+        Player player;
 
         int playerNumber, levelNumber;
         String playerName;
