@@ -37,7 +37,6 @@ public class GameState {
             }
             if (idx != 0) break;
         }
-        // System.out.println(round + " " + moveablePieces[0]);
 
         int[] DPOS = {-11, -10, -1, -9, 9, 1, -1, 11};
         for (int i = 0; i < 2; i++) {
