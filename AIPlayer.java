@@ -27,12 +27,11 @@ public class AIPlayer extends Player{
         pq.add(new Node(0, state.piecePositions, 0, null));
         while (!pq.isEmpty()) {
             Node node = pq.poll();
-            if (node.round > state.maxRound) continue;
             searchNodeNum++;
             state.setPiecePositions(node.piecePositions);
             
             if (state.isWinning()) {
-                System.out.println("The solution is found after " + searchNodeNum + " searches.");
+                System.out.println("The solution is found after searching " + searchNodeNum + " positions.");
                 int[][] chosenMoves = new int[30][6];
                 int chosenMovesIdx = 0;
                 do {
@@ -46,6 +45,7 @@ public class AIPlayer extends Player{
             }
 
             int round = node.round + 1;
+            if (round > state.maxRound) continue;
             int[][] possibleMoves = state.generatePossibleMoves(round);
             for (int[] possibleMove : possibleMoves) {
                 int distance = calculateDistance(round, possibleMove, state.diceSequence, state.targetPiece, state.maxRound);
@@ -67,7 +67,7 @@ public class AIPlayer extends Player{
         int pieceWeightCount = 0;
         for (int i = 1; i <= 6; i++) {
             if (piecePositions[i - 1] != -1) {
-                pieceWeightCount += 5 - Math.abs(targetPiece - i);
+                pieceWeightCount += 6 - Math.abs(targetPiece - i);
             }
         }
 
@@ -80,7 +80,7 @@ public class AIPlayer extends Player{
                 if (piecePositions[j] == -1) continue;
 
                 pieceDistance += Math.max(
-                    Math.abs(piecePositions[i] % 10 - piecePositions[j] % 10) % 10,
+                    Math.abs(piecePositions[i] % 10 - piecePositions[j] % 10),
                     Math.abs(piecePositions[i] / 10 - piecePositions[j] / 10)
                     );
             }
@@ -90,6 +90,6 @@ public class AIPlayer extends Player{
         int solvable = 0;
         if (targetPieceDistance + round > maxRound) solvable += 1e8;
 
-        return round + pieceWeightCount + targetPieceDistance + pieceDistance + solvable;
+        return round + pieceWeightCount + targetPieceDistance * 3 + pieceDistance + solvable;
     }
 }
