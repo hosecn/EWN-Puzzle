@@ -27,27 +27,26 @@ public class GameMain {
             System.out.println("Press 1 / 2 / 3 / 4.");
 
             levelNumber = sc.nextInt();
-        }
-
-
-        int maxRounds[] = {6, 11, 10, 15};
-        maxRound = maxRounds[levelNumber - 1];
-        String filePath = "./TestCases/level" + levelNumber + ".txt";
-        GameLoader loader = new GameLoader(filePath);
-        int targetPiece = loader.getTargetPiece();
-        int[] piecePositions = loader.getPiecePositions();
-        int[] diceSequence = loader.getDiceSequence();
-
-        loader.printGameDetails(playerName);
-
-        GameState state = new GameState(targetPiece, piecePositions, diceSequence, maxRound);
-
-        int result = player.chooseMove(state);
         
-        if (result == 1) {
-            System.out.println("The puzzle is solved.");
-        } else {
-            System.out.println("The player failed to solve the puzzle.");
+            int maxRounds[] = {6, 11, 10, 15};
+            maxRound = maxRounds[levelNumber - 1];
+            String filePath = "./TestCases/level" + levelNumber + ".txt";
+            GameLoader loader = new GameLoader(filePath);
+            int targetPiece = loader.getTargetPiece();
+            int[] piecePositions = loader.getPiecePositions();
+            int[] diceSequence = loader.getDiceSequence();
+
+            loader.printGameDetails(playerName);
+
+            GameState state = new GameState(targetPiece, piecePositions, diceSequence, maxRound);
+
+            int result = player.chooseMove(state);
+            
+            if (result == 1) {
+                System.out.println("The puzzle is solved.");
+            } else {
+                System.out.println("The player failed to solve the puzzle.");
+            }
         }
     }
 }
