@@ -9,7 +9,7 @@ public class GameMain {
         System.out.println("AI Player : Press 3.");
         Player player;
 
-        int playerNumber, levelNumber;
+        int playerNumber, levelNumber, maxRound;
         String playerName;
         try (Scanner sc = new Scanner(System.in)) {
             playerNumber = sc.nextInt();
@@ -30,7 +30,8 @@ public class GameMain {
         }
 
 
-
+        int maxRounds[] = {6, 11, 10, 15};
+        maxRound = maxRounds[levelNumber - 1];
         String filePath = "./TestCases/level" + levelNumber + ".txt";
         GameLoader loader = new GameLoader(filePath);
         int targetPiece = loader.getTargetPiece();
@@ -39,7 +40,7 @@ public class GameMain {
 
         loader.printGameDetails(playerName);
 
-        GameState state = new GameState(targetPiece, piecePositions, diceSequence, 1);
+        GameState state = new GameState(targetPiece, piecePositions, diceSequence, maxRound);
 
         int result = player.chooseMove(state);
         

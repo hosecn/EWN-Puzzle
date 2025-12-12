@@ -5,20 +5,18 @@ public class GameState {
     int[] piecePositions;
     int[] removedPositions = {22};
     int[] diceSequence;
-    int round;
-    int diceNumber;
+    int maxRound;
 
 
-    public GameState (int targetPiece, int[] piecePositions, int[] diceSequence, int round) {
+    public GameState (int targetPiece, int[] piecePositions, int[] diceSequence, int maxRound) {
         this.targetPiece = targetPiece;
         this.piecePositions = piecePositions;
-        this.round = round;
+        this.maxRound = maxRound;
         this.diceSequence = diceSequence;
-        this.diceNumber = this.diceSequence[this.round - 1];
     }
 
-    public int[][] generatePossibleMoves() {
-        diceNumber = diceSequence[round - 1];
+    public int[][] generatePossibleMoves(int round) {
+        int diceNumber = diceSequence[round - 1];
         int[] moveablePieces = new int[2];
         int[][] possibleMoves = new int[16][6];
         int possibleMovesIdx = 0;
@@ -52,13 +50,15 @@ public class GameState {
                         isRemoved = true;
 
                 if (isRemoved) continue;
+                if (pos < 0 || pos > 100) continue;
                 int[] newPiecePositions = piecePositions.clone();
-                for (int piece2 = 0; piece2 < 6; piece2++) {
-                    if (newPiecePositions[piece2] == pos) {
-                        newPiecePositions[piece2] = -1;
+                for (int piece2 = 1; piece2 <= 6; piece2++) {
+                    if (newPiecePositions[piece2 - 1] == pos) {
+                        newPiecePositions[piece2 - 1] = -1;
                     }
                 }
                 newPiecePositions[piece - 1] = pos;
+                if (newPiecePositions[targetPiece - 1] == -1) continue;
                 possibleMoves[possibleMovesIdx++] = newPiecePositions;
             }
         }
@@ -67,10 +67,6 @@ public class GameState {
 
     public void setPiecePositions(int[] Positions) {
         this.piecePositions = Positions;
-    }
-
-    public void setRound(int round) {
-        this.round = round;
     }
 
     public boolean isWinning() {
@@ -87,9 +83,5 @@ public class GameState {
 
     public int[] getDiceSequence() {
         return diceSequence;
-    }
-
-    public int getRound() {
-        return round;
     }
 }

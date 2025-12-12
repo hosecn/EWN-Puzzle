@@ -19,20 +19,17 @@ public class AIPlayer extends Player{
 
     @Override
     public int chooseMove(GameState state) {
-        int round = state.getRound();
         PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> {
             return Integer.compare(a.distance, b.distance);
         });
 
-        int distance = calculateDistance(round, state.piecePositions, state.diceSequence);
-        pq.add(new Node(round, state.piecePositions, distance, null));
+        pq.add(new Node(0, state.piecePositions, 0, null));
         while (!pq.isEmpty()) {
             Node node = pq.poll();
-            if (node.piecePositions[state.targetPiece - 1] == -1) continue;
+            if (node.round > state.maxRound) continue;
             
             state.setPiecePositions(node.piecePositions);
-            state.setRound(node.round);
-
+            
             if (state.isWinning()) {
                 int[][] chosenMoves = new int[30][6];
                 int chosenMovesIdx = 0;
@@ -46,23 +43,46 @@ public class AIPlayer extends Player{
                 return 1;
             }
 
-
-            int[][] possibleMoves = state.generatePossibleMoves();
+            int round = node.round + 1;
+            int[][] possibleMoves = state.generatePossibleMoves(round);
             for (int[] possibleMove : possibleMoves) {
-                if (possibleMove[0] == 0 && possibleMove[1] == 0 && possibleMove[2] == 0 && possibleMove[3] == 0) continue;
-                distance = calculateDistance(node.round + 1, possibleMove, state.diceSequence);
-                pq.add(new Node(node.round + 1, possibleMove, distance, node));
+                int distance = calculateDistance(round, possibleMove, state.diceSequence, state.targetPiece, state.maxRound);
+                if (distance > 1e8) continue;
+                pq.add(new Node(round, possibleMove, distance, node));
             }
         }
         return 0;
     }
 
-    private int calculateDistance(int round, int[] piecePositions, int[] diceSequence) {
-        // TODO: This needs to be updated.
+    private int calculateDistance(int round, int[] piecePositions, int[] diceSequence, int targetPiece, int maxRound) {
         int[] diceCount = new int[6];
         for (int i = round; i <= diceSequence.length; i++) {
             diceCount[diceSequence[i - 1] - 1]++;
         }
-        return round;
+        int targetPiecePosition = piecePositions[targetPiece - 1];
+        int targetPieceDistance = Math.max(targetPiecePosition % 10, targetPiecePosition / 10);
+
+        int pieceWeightCount = 0;
+        for (int i = 1; i <= 6; i++) {
+            if (piecePositions[i - 1] != -1) {
+                pieceWeightCount += 5 - Math.abs(targetPiece - i);
+            }
+        }
+
+        int pieceDistance = 0;
+        for (int i = 0; i < 6; i++) {
+            if (piecePositions[i] == -1) continue;
+            for (int j = 0; j < 6; j++)
+            {
+                if (j == i) continue;
+                if (piecePositions[j] == -1) continue;
+
+                pieceDistance += Math.max(Math.abs(piecePositions[i] % 10 - piecePositions[j] % 10) % 10, Math.abs(piecePositions[i] / 10 - piecePositions[j] / 10));
+            }
+        }
+        int solvable = 0;
+        if (maxRound + 1 - round < targetPieceDistance) solvable += 1e8;
+
+        return round + pieceWeightCount * 20 + targetPieceDistance * 3 + pieceDistance / 6 + solvable;
     }
 }
