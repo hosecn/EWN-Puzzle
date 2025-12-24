@@ -6,13 +6,13 @@ public class AIPlayer extends Player{
     class Node {
         int round;
         int[] piecePositions;
-        int distance;
+        int totalDistance;
         Node previousNode;
 
-        public Node(int round, int[] piecePositions, int distance, Node previousNode) {
+        public Node(int round, int[] piecePositions, int totalDistance, Node previousNode) {
             this.round = round;
             this.piecePositions = piecePositions;
-            this.distance = distance;
+            this.totalDistance = totalDistance;
             this.previousNode = previousNode;
         }
     }
@@ -21,7 +21,7 @@ public class AIPlayer extends Player{
     public int chooseMove(GameState state) {
         int searchNodeNum = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> {
-            return Integer.compare(a.distance, b.distance);
+            return Integer.compare(a.totalDistance, b.totalDistance);
         });
 
         pq.add(new Node(0, state.getPiecePositions(), 0, null));
@@ -48,9 +48,9 @@ public class AIPlayer extends Player{
             if (round > state.maxRound) continue;
             int[][] possibleMoves = state.generatePossibleMoves(round);
             for (int[] possibleMove : possibleMoves) {
-                int distance = calculateDistance(round, possibleMove, state.diceSequence, state.targetPiece, state.maxRound);
-                if (distance > 1e8) continue;
-                pq.add(new Node(round, possibleMove, distance, node));
+                int totalDistance = calculateDistance(round, possibleMove, state.diceSequence, state.targetPiece, state.maxRound);
+                if (totalDistance >= 1e8) continue;
+                pq.add(new Node(round, possibleMove, totalDistance, node));
             }
         }
         return 0;
