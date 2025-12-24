@@ -2,6 +2,7 @@
 import java.util.PriorityQueue;
 
 public class AIPlayer extends Player{
+    private static final int IMPOSSIBLE_COST = 100_000_000;
 
     class Node {
         int round;
@@ -49,7 +50,7 @@ public class AIPlayer extends Player{
             int[][] possibleMoves = state.generatePossibleMoves(round);
             for (int[] possibleMove : possibleMoves) {
                 int totalDistance = calculateDistance(round, possibleMove, state.diceSequence, state.targetPiece, state.maxRound);
-                if (totalDistance >= 1e8) continue;
+                if (totalDistance >= IMPOSSIBLE_COST) continue;
                 pq.add(new Node(round, possibleMove, totalDistance, node));
             }
         }
@@ -57,17 +58,24 @@ public class AIPlayer extends Player{
     }
 
     private int calculateDistance(int round, int[] piecePositions, int[] diceSequence, int targetPiece, int maxRound) {
+
+        int targetPiecePosition = piecePositions[targetPiece - 1];
+        int targetPieceDistance = Math.max(targetPiecePosition % 10, targetPiecePosition / 10);
+        
+        if (targetPieceDistance + round > maxRound)
+        {
+            return IMPOSSIBLE_COST;
+        }
+        
         int[] diceCount = new int[6];
         for (int i = round; i <= diceSequence.length; i++) {
             diceCount[diceSequence[i - 1] - 1]++;
         }
-        int targetPiecePosition = piecePositions[targetPiece - 1];
-        int targetPieceDistance = Math.max(targetPiecePosition % 10, targetPiecePosition / 10);
 
-        int pieceWeightCount = 0;
+        int pieceScore = 0;
         for (int i = 1; i <= 6; i++) {
             if (piecePositions[i - 1] != -1) {
-                pieceWeightCount += 6 - Math.abs(targetPiece - i);
+                pieceScore += 6 - Math.abs(targetPiece - i);
             }
         }
 
@@ -87,9 +95,6 @@ public class AIPlayer extends Player{
         }
         pieceDistance /= 2;
 
-        int solvable = 0;
-        if (targetPieceDistance + round > maxRound) solvable += 1e8;
-
-        return round + pieceWeightCount + targetPieceDistance * 3 + pieceDistance + solvable;
+        return round + pieceScore + targetPieceDistance * 3 + pieceDistance;
     }
 }
