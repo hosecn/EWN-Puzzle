@@ -20,25 +20,30 @@ public class GameState {
         int[][] possibleMoves = new int[16][6];
         int possibleMovesIdx = 0;
         
-        int idx = 0;
-        for (int i = 0; i <= 6; i++) {
-            if (diceNumber - i >= 1 && diceNumber - i <= 6) {
-                if (piecePositions[diceNumber - 1 - i] != -1) {
-                    moveablePieces[idx++] = diceNumber - i;
+        int possibleMoveNumber = 0;
+        if (piecePositions[diceNumber - 1] != -1) {
+            moveablePieces[possibleMoveNumber++] = diceNumber;
+        } else {
+            for (int i = diceNumber - 1; i >= 1; i--) {
+                if (piecePositions[i - 1] != -1)
+                {
+                    moveablePieces[possibleMoveNumber++] = i;
+                    break;
                 }
             }
-            if (i != 0 && diceNumber + i >= 1 && diceNumber + i <= 6) {
-                if (piecePositions[diceNumber - 1 + i] != -1) {
-                    moveablePieces[idx++] = diceNumber + i;
+
+            for (int i = diceNumber + 1; i <= 6; i++) {
+                if (piecePositions[i - 1] != -1)
+                {
+                    moveablePieces[possibleMoveNumber++] = i;
+                    break;
                 }
             }
-            if (idx != 0) break;
         }
 
         int[] DPOS = {-11, -10, -1, -9, 9, 1, 10, 11};
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < possibleMoveNumber; i++) {
             int piece = moveablePieces[i];
-            if (piece == 0) continue;
 
             for (int dpos : DPOS) {
                 int pos = piecePositions[piece - 1];
