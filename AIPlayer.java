@@ -62,6 +62,11 @@ public class AIPlayer extends Player{
         int targetPiecePosition = piecePositions[targetPiece - 1];
         int targetPieceDistance = Math.max(targetPiecePosition % 10, targetPiecePosition / 10);
         
+        if (targetPiecePosition == -1)
+        {
+            return IMPOSSIBLE_COST;
+        }
+
         if (targetPieceDistance + round > maxRound)
         {
             return IMPOSSIBLE_COST;
@@ -73,11 +78,13 @@ public class AIPlayer extends Player{
         }
 
         int pieceScore = 0;
+        int pieceCount = 0;
         for (int i = 1; i <= 6; i++) {
             if (piecePositions[i - 1] != -1) {
                 pieceScore += 6 - Math.abs(targetPiece - i);
+                pieceCount += 1;
             }
-        }
+        }        
 
         int pieceDistance = 0;
         for (int i = 0; i < 6; i++) {
@@ -95,6 +102,6 @@ public class AIPlayer extends Player{
         }
         pieceDistance /= 2;
 
-        return round + pieceScore + targetPieceDistance * 3 + pieceDistance;
+        return round + pieceScore + targetPieceDistance * (7 - pieceCount) + pieceDistance;
     }
 }
