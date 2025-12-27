@@ -32,8 +32,7 @@ public class GameLoader {
 
 
 
-    public void printGameDetails(String playerName) {
-        String filePath = "moves.txt";
+    public void printGameDetails(String playerName, String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
             writer.println(playerName);
 

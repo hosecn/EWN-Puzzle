@@ -6,7 +6,7 @@ public abstract class Player {
     public abstract int chooseMove(GameState state);
     
     public void printMove(int[] piecePositions) {
-        String filePath = "moves.txt";
+        String filePath = GameMain.outputFilePath;
         try (FileWriter writer = new FileWriter(filePath, true)) {
             for (int pos : piecePositions) {
                 writer.write(pos + " ");

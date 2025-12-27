@@ -1,8 +1,10 @@
 import java.util.Scanner;
 
 public class GameMain {
+    static String outputFilePath = "moves.txt";
 
     public static void main(String[] args) {
+        
         System.out.println("Please choose a game mode.");
         System.out.println("Human Player : Press 1.");
         System.out.println("Random Player : Press 2.");
@@ -30,13 +32,13 @@ public class GameMain {
         
             int maxRounds[] = {6, 10, 10, 15};
             maxRound = maxRounds[levelNumber - 1];
-            String filePath = "./TestCases/level" + levelNumber + ".txt";
-            GameLoader loader = new GameLoader(filePath);
+            String levelFilePath = "./TestCases/level" + levelNumber + ".txt";
+            GameLoader loader = new GameLoader(levelFilePath);
             int targetPiece = loader.getTargetPiece();
             int[] piecePositions = loader.getPiecePositions();
             int[] diceSequence = loader.getDiceSequence();
 
-            loader.printGameDetails(playerName);
+            loader.printGameDetails(playerName, outputFilePath);
 
             GameState state = new GameState(targetPiece, piecePositions, diceSequence, maxRound);
 
