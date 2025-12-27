@@ -7,6 +7,7 @@ public class GameLoader {
     private int[] diceSequence;
 
     public GameLoader(String filePath) {
+        
         try (FileReader fr = new FileReader(filePath); BufferedReader br = new BufferedReader(fr)) {
             String line;
             line = br.readLine();
@@ -33,15 +34,15 @@ public class GameLoader {
 
     public void printGameDetails(String playerName) {
         String filePath = "moves.txt";
-        try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(playerName + "\n");
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(playerName);
 
             for (int dice : diceSequence) {
-                writer.write(dice + " ");
+                writer.print(dice + " ");
             }      
-            writer.write("\n");
+            writer.println();
 
-            writer.write(targetPiece + "\n");
+            writer.println(targetPiece);
             writer.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
